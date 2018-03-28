@@ -38,6 +38,7 @@ defmodule TasktrackaspaWeb.Endpoint do
     key: "_tasktrackaspa_key",
     signing_salt: "AvSl+nkL"
 
+  plug PhoenixGon.Pipeline
   plug TasktrackaspaWeb.Router
 
   @doc """
