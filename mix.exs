@@ -41,7 +41,10 @@ defmodule Tasktrackaspa.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:phoenix_gon, "~> 0.3.2"}
+      {:phoenix_gon, "~> 0.3.2"},
+      {:poison, "~> 3.1"},
+      {:comeonin, "~> 4.0"},
+      {:argon2_elixir, "~> 1.2"},
     ]
   end
 

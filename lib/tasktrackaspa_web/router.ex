@@ -1,6 +1,12 @@
 defmodule TasktrackaspaWeb.Router do
   use TasktrackaspaWeb, :router
 
+  import PhoenixGon.Controller
+  alias Tasktrackaspa.Users
+  alias Tasktrackaspa.Users.User
+  alias TasktrackaspaWeb.UserView
+
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -20,8 +26,6 @@ defmodule TasktrackaspaWeb.Router do
     get "/users", PageController, :index
     get "/register", PageController, :index
 
-    post "/session", SessionController, :create
-    delete "/session", SessionController, :delete
   end
 
   # Other scopes may use custom stacks.
@@ -29,6 +33,9 @@ defmodule TasktrackaspaWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    post "/session", SessionController, :create
+    delete "/session", SessionController, :delete
+    get "/session", SessionController, :index
 
   end
 end

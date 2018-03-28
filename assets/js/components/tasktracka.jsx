@@ -7,6 +7,9 @@ import Feed from './feed';
 import Users from './users';
 import Login from './login';
 import Register from './register';
+import Home from './home';
+import { history } from 'react-router-dom';
+
 
 export default function tasktracka_init() {
   let root = document.getElementById('root');
@@ -22,8 +25,19 @@ class TaskTracka extends React.Component {
       users: [],
     };
 
+    this.get_session();
     // this.request_posts();
     // this.request_users();
+  }
+
+  get_session() {
+    $.ajax({
+        type: 'get',
+        url: "/api/session", 
+        success: (resp) => { 
+          this.setState(_.extend(this.state, { user: resp.data }));
+        }
+    });
   }
 
   request_posts() {
@@ -37,12 +51,43 @@ class TaskTracka extends React.Component {
     });
   }
 
+  login(event) {
+    event.preventDefault();
+
+    const formData = $('#login').serialize();
+    console.log(formData);
+
+    $.ajax({
+      type: 'post',
+      url: "/api/session", 
+      data: formData,
+      success: (resp) => { 
+        console.log(resp.data);
+        this.setState(_.extend(this.state, { user: resp.data }))
+      },
+      error: (resp) => {console.log(resp)},
+      });
+  }
+
+  logout() {
+    $.ajax({
+      type: 'delete',
+      url: "/api/session", 
+      success: (resp) => { 
+        this.setState(_.extend(this.state, { user: undefined }))
+      },
+      error: (resp) => {console.log(resp)},
+      });
+  }
+
   render() {
-    return (
+    console.log("User: ", this.state.user);
+    return this.state.user ? 
+    (
       <Router>
         <div>
-          <Nav />
-          <Route path="/" exact={true} render={() => <Login />} />
+          <Nav user={this.state.user} logout={() => this.logout()} />
+          <Route path="/" exact={true} render={() => <Home /> } />
           <Route path="/users" exact={true} render={() =>
             <Users users={this.state.users} />
           } />
@@ -51,6 +96,18 @@ class TaskTracka extends React.Component {
               match.params.user_id == pp.user.id )
             } />
           } />
+          <Route path="/register" exact={true} render={() =>
+            <Register />
+          } />
+        </div>
+      </Router>
+    )
+    : 
+    (
+      <Router>
+        <div>
+          <Nav user={this.state.user}/>
+          <Route path="/" exact={true} render={() => <Login login={(event) => this.login(event)} />} />
           <Route path="/register" exact={true} render={() =>
             <Register />
           } />

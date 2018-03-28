@@ -1,25 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-function handleSubmit(event) {
-	event.preventDefault();
-
-	
-}
-
-export default function Login(params) {
+function Login(params) {
   	return (
 	  	<div className="container">
 		  	<div className="row">
 		  		<div className="col">
 		  			<h2>Login</h2>
-					<form onSubmit={(event) => handleSubmit(event)}>
+					<form id="login" onSubmit={(event) => params.login(event)}>
 					  <div className="form-group">
 					    <label>Email address</label>
-					    <input type="email" className="form-control" placeholder="Enter email"></input>
+					    <input type="email" name="email" className="form-control" placeholder="Enter email"></input>
 					  </div>
 					  <div className="form-group">
-					  	<button type="submit" className="btn btn-primary mr-2">Submit</button>
+					  	<input type="submit" value="Submit" className="btn btn-primary mr-2"/>
 					  	<Link to={"/register"}>Register</Link>
 					  </div>
 					</form>
@@ -29,3 +24,5 @@ export default function Login(params) {
 
   );
 }
+
+export default withRouter(Login);
