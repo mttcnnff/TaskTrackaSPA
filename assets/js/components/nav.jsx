@@ -1,13 +1,12 @@
-
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { NavItem } from 'reactstrap';
 
 export default function Nav(props) {
   console.log(props);
-  return props.user ?
+  let navbar =  props.user ?
   (
-    <nav className="navbar navbar-dark bg-dark navbar-expand mb-5">
+    <nav className="navbar navbar-dark bg-dark navbar-expand mb-3">
       <span className="navbar-brand">
         TaskTracker
       </span>
@@ -31,13 +30,34 @@ export default function Nav(props) {
   )
   :
   (
-    <nav className="navbar navbar-dark bg-dark navbar-expand mb-5">
+    <nav className="navbar navbar-dark bg-dark navbar-expand mb-3">
       <ul className="navbar-nav mr-auto">
         <NavItem>
           <NavLink to="/" href="#" className="nav-link navbar-brand">TaskTracker</NavLink>
         </NavItem>
       </ul>
+      <ul className="navbar-nav ml-auto">
+        <NavItem>
+          <NavLink to="/" className="nav-link">Log In</NavLink>
+        </NavItem>
+      </ul>
     </nav>
-  )
+  );
+
+  return (
+    <div>
+      { navbar }
+      <div className="container">
+        <div id="alert-block" className="d-none">
+          <p className="alert alert-info" role="alert"></p>
+        </div>
+        <div id="danger-block" className="d-none">
+          <p className="alert alert-danger" role="alert"></p>
+        </div>
+      </div>
+    </div>
+
+
+  );
 
 }

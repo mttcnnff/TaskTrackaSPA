@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Alerts from './alert';
 
 function handleSubmit(event) {
 	event.preventDefault();
@@ -6,20 +7,15 @@ function handleSubmit(event) {
 	const formData = $('#register').serialize();
 	console.log(formData);
 
+
 	$.ajax({
       type: 'post',
       url: "/api/users", 
       data: formData,
-      success: (resp) => {console.log(resp)},
-      error: (resp) => {console.log(resp)},
+      success: (resp) => {Alerts.flashAlert("New user created!"); $('#register')[0].reset()},
+      error: (resp) => {Alerts.flashDanger("Failed - " + resp.responseText)},
     });
 }
-/*
-<div className="form-group">
-					    <label>Password</label>
-					    <input type="password" className="form-control" placeholder="Password"></input>
-					  </div>
-					  */
 
 export default function Register(params) {
   	return (
@@ -27,6 +23,8 @@ export default function Register(params) {
 		  	<div className="row">
 		  		<div className="col">
 		  			<h2>Register</h2>
+		  			<div id="errors" className="d-none">
+		  			</div>
 					<form id="register" onSubmit={(event) => handleSubmit(event)}>
 					  <div className="form-group">
 					    <label>Email address</label>
@@ -35,6 +33,14 @@ export default function Register(params) {
 					  <div className="form-group">
 					    <label>Name</label>
 					    <input type="text" name="user[name]" className="form-control" placeholder="Enter name"></input>
+					  </div>
+					  <div className="form-group">
+					  	<label>Password</label>
+   						<input type="password" name="user[password]" className="form-control" placeholder="Password"/>
+					  </div>
+					  <div className="form-group">
+					  	<label>Confirm Password</label>
+   						<input type="password" name="user[password_confirmation]" className="form-control" placeholder="Password"/>
 					  </div>
 					  <button type="submit" className="btn btn-primary">Submit</button>
 					</form>

@@ -6,5 +6,7 @@ defmodule Tasktrackaspa.Repo.Migrations.AddedEmailField do
 	  add :email, :string
 	end
 
+	create unique_index(:users, [:email])
+
   end
 end

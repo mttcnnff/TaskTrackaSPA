@@ -14,6 +14,10 @@ function Login(params) {
 					    <input type="email" name="email" className="form-control" placeholder="Enter email"></input>
 					  </div>
 					  <div className="form-group">
+					  	<label>Password</label>
+   						<input type="password" className="form-control" placeholder="Password"/>
+					  </div>
+					  <div className="form-group">
 					  	<input type="submit" value="Submit" className="btn btn-primary mr-2"/>
 					  	<Link to={"/register"}>Register</Link>
 					  </div>

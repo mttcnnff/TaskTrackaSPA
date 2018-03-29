@@ -9,6 +9,7 @@ import Login from './login';
 import Register from './register';
 import Home from './home';
 import { history } from 'react-router-dom';
+import * as Alerts from './alert';
 
 
 export default function tasktracka_init() {
@@ -63,7 +64,8 @@ class TaskTracka extends React.Component {
       data: formData,
       success: (resp) => { 
         console.log(resp.data);
-        this.setState(_.extend(this.state, { user: resp.data }))
+        this.setState(_.extend(this.state, { user: resp.data }));
+        Alerts.flashAlert("User logged in.");
       },
       error: (resp) => {console.log(resp)},
       });
