@@ -26,8 +26,17 @@ defmodule TasktrackaspaWeb.SessionController do
     end
   end
 
-  def create(conn, %{"email" => email}) do
+  # TODO: Move to user.ex
+  defp get_and_auth_user(email, password) do
     user = Users.get_user_by_email(email)
+    case Comeonin.Argon2.check_pass(user, password) do
+      {:ok, user} -> user
+      _else       -> nil
+    end
+  end
+
+  def create(conn, %{"email" => email, "password" => password}) do
+    user = get_and_auth_user(email, password)
 
     if user do
       token = Phoenix.Token.sign(conn, "user salt", user.id, max_age: 2*60*60)
