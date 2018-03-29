@@ -7,7 +7,7 @@ import Feed from './feed';
 import Users from './users';
 import Login from './login';
 import Register from './register';
-import Home from './home';
+import Tasks from './tasks';
 import { history } from 'react-router-dom';
 import * as Alerts from './alert';
 
@@ -22,13 +22,12 @@ class TaskTracka extends React.Component {
     super(props);
 
     this.state = {
-      posts: [],
       users: [],
     };
 
     this.get_session();
     // this.request_posts();
-    // this.request_users();
+    this.request_users();
   }
 
   get_session() {
@@ -41,13 +40,13 @@ class TaskTracka extends React.Component {
     });
   }
 
-  request_posts() {
-    $.ajax("/api/v1/posts", {
+  request_users() {
+    $.ajax("/api/users", {
       method: "get",
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
       success: (resp) => {
-        this.setState(_.extend(this.state, { posts: resp.data }));
+        this.setState(_.extend(this.state, { users: resp.data }));
       },
     });
   }
@@ -63,13 +62,15 @@ class TaskTracka extends React.Component {
       url: "/api/session", 
       data: formData,
       success: (resp) => { 
-        console.log(resp.data);
+
         this.setState(_.extend(this.state, { user: resp.data }));
-        Alerts.flashAlert("User logged in.");
+        Alerts.flashAlert("Welcome back " + this.state.user.name + "!");
+
       },
-      error: (resp) => {console.log(resp)},
+      error: (resp) => {Alerts.flashDanger(resp.responseText)},
       });
   }
+
 
   logout() {
     $.ajax({
@@ -84,37 +85,53 @@ class TaskTracka extends React.Component {
 
   render() {
     console.log("User: ", this.state.user);
-    return this.state.user ? 
-    (
+    console.log("Users: ", this.state.users);
+    return (
       <Router>
         <div>
           <Nav user={this.state.user} logout={() => this.logout()} />
-          <Route path="/" exact={true} render={() => <Home /> } />
-          <Route path="/users" exact={true} render={() =>
-            <Users users={this.state.users} />
+          <Route path="/" exact={true} render={
+            () => this.state.user ? <Tasks users={this.state.users} /> : <Login login={(event) => this.login(event)} />
           } />
-          <Route path="/users/:user_id" render={({match}) =>
-            <Feed posts={_.filter(this.state.posts, (pp) =>
-              match.params.user_id == pp.user.id )
-            } />
-          } />
-          <Route path="/register" exact={true} render={() =>
-            <Register />
-          } />
-        </div>
-      </Router>
-    )
-    : 
-    (
-      <Router>
-        <div>
-          <Nav user={this.state.user}/>
-          <Route path="/" exact={true} render={() => <Login login={(event) => this.login(event)} />} />
           <Route path="/register" exact={true} render={() =>
             <Register />
           } />
         </div>
       </Router>
     );
+
+
+    // return this.state.user ? 
+    // (
+    //   <Router>
+    //     <div>
+    //       <Nav user={this.state.user} logout={() => this.logout()} />
+    //       <Route path="/" exact={true} render={() => <Home /> } />
+    //       <Route path="/users" exact={true} render={() =>
+    //         <Users users={this.state.users} />
+    //       } />
+    //       <Route path="/users/:user_id" render={({match}) =>
+    //         <Feed posts={_.filter(this.state.posts, (pp) =>
+    //           match.params.user_id == pp.user.id )
+    //         } />
+    //       } />
+    //       <Route path="/register" exact={true} render={() =>
+    //         <Register />
+    //       } />
+    //     </div>
+    //   </Router>
+    // )
+    // : 
+    // (
+    //   <Router>
+    //     <div>
+    //       <Nav user={this.state.user}/>
+    //       <Route path="/" exact={true} render={() => <Login login={(event) => this.login(event)} />} />
+    //       <Route path="/register" exact={true} render={() =>
+    //         <Register />
+    //       } />
+    //     </div>
+    //   </Router>
+    // );
   }
 }

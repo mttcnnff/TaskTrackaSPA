@@ -33,6 +33,7 @@ defmodule TasktrackaspaWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    resources "/tasks", TaskController, except: [:new, :edit]
     post "/session", SessionController, :create
     delete "/session", SessionController, :delete
     get "/session", SessionController, :index

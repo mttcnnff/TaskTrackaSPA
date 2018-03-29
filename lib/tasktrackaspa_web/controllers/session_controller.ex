@@ -48,7 +48,7 @@ defmodule TasktrackaspaWeb.SessionController do
       |> json(json);
     else
       conn
-      |> send_resp(:error, "Can't create session!")
+      |> send_resp(:unauthorized, "Invalid Email or Password!")
     end
   end
 
