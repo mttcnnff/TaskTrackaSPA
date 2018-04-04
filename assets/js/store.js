@@ -86,7 +86,6 @@ let empty_flash = {
 function flash(state = empty_flash, action) {
 	switch (action.type) {
 		case 'UPDATE_INFO_BAR':
-			console.log("Updating");
 			return Object.assign({}, state, {info: action.data});
 		case 'UPDATE_DANGER_BAR':
 			return Object.assign({}, state, {danger: action.data});

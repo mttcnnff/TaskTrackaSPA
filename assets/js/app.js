@@ -29,7 +29,6 @@ let tokens = _.chain(ckarray)
 	.map(function(item){ return item.split('=') })
 	.object()
 	.value();
-console.log(tokens.token);
 
 $(function() {
 	api.request_tasks();
