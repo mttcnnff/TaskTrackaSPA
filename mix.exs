@@ -45,6 +45,7 @@ defmodule Tasktrackaspa.Mixfile do
       {:poison, "~> 3.1"},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
+      {:distillery, "~> 1.5", runtime: false}
     ]
   end
 
