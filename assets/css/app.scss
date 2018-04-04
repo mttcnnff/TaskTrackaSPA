@@ -8,3 +8,8 @@
 textarea {
 	resize: none;
 }
+
+.task-list {
+	height: 500px; 
+	overflow-y: auto;
+}

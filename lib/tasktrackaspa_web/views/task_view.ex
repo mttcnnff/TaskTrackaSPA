@@ -1,6 +1,7 @@
 defmodule TasktrackaspaWeb.TaskView do
   use TasktrackaspaWeb, :view
   alias TasktrackaspaWeb.TaskView
+  alias TasktrackaspaWeb.UserView
 
   def render("index.json", %{tasks: tasks}) do
     %{data: render_many(tasks, TaskView, "task.json")}
@@ -15,6 +16,7 @@ defmodule TasktrackaspaWeb.TaskView do
       title: task.title,
       description: task.description,
       completed: task.completed,
-      time: task.time}
+      time: task.time,
+      user: render_one(task.user, UserView, "user.json")}
   end
 end

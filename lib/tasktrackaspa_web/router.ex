@@ -1,3 +1,4 @@
+
 defmodule TasktrackaspaWeb.Router do
   use TasktrackaspaWeb, :router
 
@@ -19,6 +20,15 @@ defmodule TasktrackaspaWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug :auth
+  end
+
+  def auth(conn, _params) do
+    # TODO: Move this function out of the router module.
+    conn
+  end
+
   scope "/", TasktrackaspaWeb do
     pipe_through :browser # Use the default browser stack
 
@@ -31,12 +41,9 @@ defmodule TasktrackaspaWeb.Router do
   # Other scopes may use custom stacks.
   scope "/api", TasktrackaspaWeb do
     pipe_through :api
-
     resources "/users", UserController, except: [:new, :edit]
-    resources "/tasks", TaskController, except: [:new, :edit]
     post "/session", SessionController, :create
     delete "/session", SessionController, :delete
-    get "/session", SessionController, :index
-
+    resources "/tasks", TaskController, except: [:new, :edit]
   end
 end

@@ -24,6 +24,7 @@ defmodule Tasktrackaspa.Users.User do
     user
     |> cast(attrs, [:email, :name, :password, :password_confirmation])
     |> unique_constraint(:email)
+    |> validate_format(:email, ~r/@/)
     |> validate_confirmation(:password)
     |> validate_password(:password)
     |> put_pass_hash()

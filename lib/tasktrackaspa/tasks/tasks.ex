@@ -18,7 +18,7 @@ defmodule Tasktrackaspa.Tasks do
 
   """
   def list_tasks do
-    Repo.all(Task)
+    Repo.all(Task) |> Repo.preload(:user)
   end
 
   @doc """
@@ -36,6 +36,10 @@ defmodule Tasktrackaspa.Tasks do
 
   """
   def get_task!(id), do: Repo.get!(Task, id)
+  def get_task(id) do
+    Repo.get(Task, id)
+    |> Repo.preload(:user)
+  end
 
   @doc """
   Creates a task.
@@ -50,9 +54,12 @@ defmodule Tasktrackaspa.Tasks do
 
   """
   def create_task(attrs \\ %{}) do
-    %Task{}
+    case %Task{}
     |> Task.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert() do
+      {:ok, task} -> {:ok, task |> Repo.preload(:user)}
+      {:error, params} -> {:error, params}
+    end
   end
 
   @doc """

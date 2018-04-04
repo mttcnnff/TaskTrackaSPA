@@ -21,4 +21,19 @@ import "phoenix_html"
 // import socket from "./socket"
 
 import tasktracka_init from "./components/tasktracka";
-$(tasktracka_init())
+import store from "./store";
+import api from "./api";
+
+let ckarray = document.cookie.replace(/\s/g,'').split(';');
+let tokens = _.chain(ckarray)
+	.map(function(item){ return item.split('=') })
+	.object()
+	.value();
+console.log(tokens.token);
+
+$(function() {
+	api.request_tasks();
+	api.request_users();
+	api.submit_login({token: tokens.token});
+	tasktracka_init(store);
+});

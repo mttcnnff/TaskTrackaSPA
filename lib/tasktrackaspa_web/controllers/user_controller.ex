@@ -25,18 +25,43 @@ defmodule TasktrackaspaWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Users.get_user!(id)
+  def update(conn, %{"id" => id, "user" => user_params, "token" => token}) do
+    user = Users.get_user(id)
 
-    with {:ok, %User{} = user} <- Users.update_user(user, user_params) do
-      render(conn, "show.json", user: user)
+    case Phoenix.Token.verify(conn, "user salt", token, max_age: 2*60*60) do
+      {:ok, user_id} ->
+        case user_id == user.id do
+          true ->
+            with {:ok, %User{} = user} <- Users.update_user(user, user_params) do
+              render(conn, "show.json", user: user)
+            end
+          false ->
+            conn
+            |> send_resp(:unauthorized, "Not Authenticated.")
+        end        
+      {:error, reason} -> 
+        conn
+        |> send_resp(:unauthorized, "Not Authenticated.")
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    user = Users.get_user!(id)
-    with {:ok, %User{}} <- Users.delete_user(user) do
-      send_resp(conn, :no_content, "")
+  def delete(conn, %{"id" => id, "token" => token}) do
+    user = Users.get_user(id)
+    
+    case Phoenix.Token.verify(conn, "user salt", token, max_age: 2*60*60) do
+      {:ok, user_id} ->
+        case user_id == user.id do
+          true ->
+            with {:ok, %User{}} <- Users.delete_user(user) do
+              send_resp(conn, :ok, "User Deleted.")
+            end
+          false ->
+            conn
+            |> send_resp(:unauthorized, "Not Authenticated.")
+        end        
+      {:error, reason} -> 
+        conn
+        |> send_resp(:unauthorized, "Not Authenticated.")
     end
   end
 end
