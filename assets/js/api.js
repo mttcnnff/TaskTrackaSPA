@@ -72,7 +72,6 @@ class TheServer {
 	}
 
 	register_user(data) {
-		console.log(data);
 		$.ajax("/api/users", {
 			method: "post",
 			dataType: "json",

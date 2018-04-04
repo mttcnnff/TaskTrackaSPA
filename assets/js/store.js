@@ -120,11 +120,11 @@ function taskform(state = empty_task_form, action) {
 }
 
 function root_reducer(state0, action) {
-	console.log("reducer", action);
+	//console.log("reducer", action);
 
 	let reducer = combineReducers({users, tasks, user, token, login, register, flash, taskform});
 	let state1 = reducer(state0, action);
-	console.log("state1", state1);
+	//console.log("state1", state1);
 	return deepFreeze(state1);
 };
 

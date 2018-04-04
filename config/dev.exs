@@ -51,8 +51,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :tasktrackaspa, Tasktrackaspa.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "tasktrackaspa",
+  password: "password",
   database: "tasktrackaspa_dev",
   hostname: "localhost",
   pool_size: 10

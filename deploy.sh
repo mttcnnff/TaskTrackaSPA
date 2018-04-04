@@ -1,6 +1,6 @@
 export PORT=5600
 export MIX_ENV=prod
-export GIT_PATH=/home/tasktracka/src/TaskTracka 
+export GIT_PATH=/home/tasktrackaspa/src/TaskTrackaSPA 
 
 mix ecto.create
 mix ecto.migrate
@@ -12,7 +12,7 @@ if [ $PWD != $GIT_PATH ]; then
 	exit 1
 fi
 
-if [ $USER != "tasktracka" ]; then
+if [ $USER != "tasktrackaspa" ]; then
 	echo "Error: must run as user 'tasktracka'"
 	echo "  Current user is $USER"
 	exit 2
@@ -28,17 +28,17 @@ mkdir -p ~/www
 mkdir -p ~/old
 
 NOW=`date +%s`
-if [ -d ~/www/TaskTracka ]; then
-	echo mv ~/www/TaskTracka ~/old/$NOW
-	mv ~/www/TaskTracka ~/old/$NOW
+if [ -d ~/www/TaskTrackaSPA ]; then
+	echo mv ~/www/TaskTrackaSPA ~/old/$NOW
+	mv ~/www/TaskTrackaSPA ~/old/$NOW
 fi
 
-mkdir -p ~/www/TaskTracka
-REL_TAR=~/src/TaskTracka/_build/prod/rel/tasktracka/releases/0.0.1/tasktracka.tar.gz
-(cd ~/www/TaskTracka && tar xzvf $REL_TAR)
+mkdir -p ~/www/TaskTrackaSPA
+REL_TAR=~/src/TaskTrackaSPA/_build/prod/rel/tasktrackaspa/releases/0.0.1/tasktrackaspa.tar.gz
+(cd ~/www/TaskTrackaSPA && tar xzvf $REL_TAR)
 
 crontab - <<CRONTAB
-@reboot bash /home/tasktracka/src/TaskTracka/start.sh
+@reboot bash /home/tasktrackaspa/src/TaskTrackaSPA/start.sh
 CRONTAB
 
 #. start.sh
