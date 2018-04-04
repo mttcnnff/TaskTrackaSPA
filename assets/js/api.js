@@ -36,7 +36,6 @@ class TheServer {
 			contentType: "application/json; charset=UTF-8",
 			data: JSON.stringify(data),
 			success: (resp) => {
-				console.log(resp);
 				store.dispatch({
 				    type: 'SET_TOKEN',
 				    token: resp.token,
