@@ -6,8 +6,6 @@ import store from '../store';
 import { connect } from 'react-redux';
 
 let Task = connect(({current_task}) => {return {current_task};})((props) => {
-	console.log("Props: ", props);
-
   let task = props.task;
   let status = task.completed == true ? "Completed: " + task.time + " min" : "In progress: " + task.time + " min";
   return (
